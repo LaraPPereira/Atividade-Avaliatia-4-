@@ -4,49 +4,74 @@
 
 Código
  
-int liga = 3;
-//Sensores
-int a0 = 4;
-int a1 = 5;
-int b1 = 6;
 
-// Estados
-int sliga = 0;
-int sa0 = 0;
-int sa1 = 0;
-int sb1 = 0;
+// Ligar sistema
+int button=13;
 
-int a_mais = 13;
-int a_menos = 12;
-int b_mais = 11;
-//=========================================================================================================================================
+// Sensor - Caixa Baixa 
+int s1=3; 
+// Sensor - Caixa Média 
+int s2=4;
+// Sensor - caixa - Alta
+int s3=5; 
+
+// Sopro
+int k1=6;
+// Esteira Desvio
+int k2=7;
+
+// Tempo de sompro
+int t_sopro=800; 
+ // Tempo de desvio
+int t_desvio=1500; 
+
+//Estados
+int sensor1=0;
+int sensor2=0;
+int sensor3=0;
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void setup() {
-  pinMode (liga, INPUT);
-  pinMode (a0, INPUT);
-  pinMode (a1, INPUT);
-  pinMode (b1, INPUT);
+  
+pinMode(button, INPUT);
+pinMode(sensor1, INPUT);
+pinMode(sensor2, INPUT);
+pinMode(sensor3, INPUT);
 
-  pinMode (a_mais, OUTPUT);
-  pinMode (a_menos, OUTPUT);
-  pinMode (b_mais, OUTPUT);
+pinMode(k1, OUTPUT);
+pinMode(k2, OUTPUT); 
 }
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void loop() {
-  sliga = digitalRead (liga);
-  sa0 = digitalRead (a0);
-  sa1 = digitalRead (a1);
-  sb1 = digitalRead (b1);
+  
+sensor1 = digitalRead(s1);
+sensor2 = digitalRead(s2);
+sensor3 = digitalRead(s3);
 
-  if (sliga == 1 && sa0 == 1)
-  {
-    digitalWrite (a_mais, HIGH);
-  }
-  if (sa1 == 1)
-  {
-    digitalWrite (b_mais, HIGH);
-  }
-  else ((sb1 == 1) && (sa0 == 0));
-    {
-      digitalWrite (a_menos, HIGH);
+// Soprador da caixa fora do padrão
+
+    if  ((button==1)&& (sensor2==1)&&(sensor1==1)&&(sensor3==0)) {
+  // Sopro
+  digitalWrite(k1, HIGH); 
+// t_sopro = tempo de sopro
+delay(t_sopro); 
+// Desligar o sopro
+digitalWrite(k1, LOW); 
+}
+    else{
+digitalWrite(k1, LOW);
+}
+// Acionar a esteira de desvio
+    if ((button==1)&&(sensor1==1)&&(sensor2==1)&&(sensor3==1)) {
+ //Desvio
+digitalWrite(k2, HIGH); 
+//t_desvio
+delay(t_desvio);
+
+//Desligar o desvio
+digitalWrite(k2, LOW); 
+}
+    else {
+  digitalWrite(k2, LOW); 
   }
 }
